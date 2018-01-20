@@ -18,6 +18,8 @@ typealias Endo<A> = (A) -> A
 
 typealias Handler<A> = (A) -> ()
 
+typealias Updater<A> = Handler<Endo<A>>
+
 typealias Continuation<A> = (@escaping Handler<A>) -> ()
 
 typealias Throwing<A> = () throws -> A

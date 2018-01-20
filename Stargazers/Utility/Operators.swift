@@ -1,20 +1,15 @@
 
-precedencegroup RightCompositionPrecedence {
-    associativity: right
+precedencegroup ApplicationPrecedence {
+    associativity: left
 }
 
-infix operator <| : RightCompositionPrecedence
+infix operator <| : ApplicationPrecedence
 
 func <| <A,B> (lhs: (A) -> B, rhs: A) -> B {
     return lhs(rhs)
 }
 
-precedencegroup LeftCompositionPrecedence {
-    associativity: left
-    higherThan: RightCompositionPrecedence
-}
-
-infix operator |> : LeftCompositionPrecedence
+infix operator |> : ApplicationPrecedence
 
 func |> <A,B> (lhs: A, rhs: (A) -> B) -> B {
     return rhs(lhs)

@@ -10,13 +10,15 @@ enum Client {
                     return
                 }
                 
-                connection(request) <| { serverResponse in
-                    yield {
-                        let jsonResponse = try JSONResponse.init(serverResponse: serverResponse)
-                        let responseModel = try Output.init(jsonResponse: jsonResponse)
-                        
-                        return responseModel
-                    }
+                connection
+                    <| request
+                    <| { serverResponse in
+                        yield {
+                            let jsonResponse = try JSONResponse.init(serverResponse: serverResponse)
+                            let responseModel = try Output.init(jsonResponse: jsonResponse)
+                            
+                            return responseModel
+                        }
                 }
             }
         }
@@ -32,16 +34,21 @@ enum Client {
                     return
                 }
                 
-                connection(URLRequest.init(url: url)) <| { serverResponse in
-                    yield {
-                        if let error = serverResponse.2 {
-                            throw error
+                connection
+                    <| URLRequest.init(url: url)
+                    <| { serverResponse in
+                        yield {
+                            if let error = serverResponse.2 {
+                                throw error
+                            }
+                            
+                            guard let data = serverResponse.0, let image = UIImage.init(data: data) else {
+                                throw "Cannot create image from data"
+                            }
+                            
+                            cache[url] = image
+                            return image
                         }
-                        guard let data = serverResponse.0, let image = UIImage.init(data: data) else {
-                            throw "Cannot create image from data"
-                        }
-                        return image
-                    }
                 }
             }
         }
