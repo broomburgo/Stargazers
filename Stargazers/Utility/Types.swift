@@ -21,3 +21,10 @@ typealias Handler<A> = (A) -> ()
 typealias Continuation<A> = (@escaping Handler<A>) -> ()
 
 typealias Throwing<A> = () throws -> A
+
+enum Transitional<A> {
+    case emtpy
+    case loading
+    case success(A)
+    case failure(Error)
+}

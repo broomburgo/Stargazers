@@ -1,10 +1,17 @@
-import Foundation
+import UIKit
 
 struct Configuration {
     var scheme: String
     var host: String
     var headers: [String:String]
     var connection: ServerConnection
+    
+    init(scheme: String, host: String, headers: [String:String], connection: @escaping ServerConnection) {
+        self.scheme = scheme
+        self.host = host
+        self.headers = headers
+        self.connection = connection
+    }
     
     static var global: Configuration {
         return  Configuration.init(
@@ -19,4 +26,6 @@ struct Configuration {
                 }
         })
     }
+    
+    private(set) lazy var loadCachedImage: RequestFunction<URL,UIImage> = Client.cachedImageLoader(connection: self.connection)
 }

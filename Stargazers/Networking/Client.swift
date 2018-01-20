@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 enum Client {
     static func getResource<Input,Output>(connection: @escaping ServerConnection, getURLRequest: @escaping (Input) -> URLRequest?) -> RequestFunction<Input,Output> where Output: JSONResponseConstructible {
@@ -19,6 +20,30 @@ enum Client {
                 }
             }
         }
-    }    
+    }
+    
+    static func cachedImageLoader(connection: @escaping ServerConnection) -> RequestFunction<URL,UIImage> {
+        var cache: [URL:UIImage] = [:]
+        
+        return { url in
+            { yield in
+                if let cachedImage = cache[url] {
+                    yield { cachedImage }
+                    return
+                }
+                
+                connection(URLRequest.init(url: url)) <| { serverResponse in
+                    yield {
+                        if let error = serverResponse.2 {
+                            throw error
+                        }
+                        guard let data = serverResponse.0, let image = UIImage.init(data: data) else {
+                            throw "Cannot create image from data"
+                        }
+                        return image
+                    }
+                }
+            }
+        }
+    }
 }
-
