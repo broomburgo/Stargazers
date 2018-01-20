@@ -12,6 +12,13 @@ extension String {
     }
 }
 
+extension Array {
+    func getSafely(at index: Int) -> Element? {
+        guard indices.contains(index) else { return nil }
+        return self[index]
+    }
+}
+
 extension String: Error {}
 
 typealias Endo<A> = (A) -> A
@@ -25,7 +32,7 @@ typealias Continuation<A> = (@escaping Handler<A>) -> ()
 typealias Throwing<A> = () throws -> A
 
 enum Transitional<A> {
-    case emtpy
+    case empty
     case loading
     case success(A)
     case failure(Error)

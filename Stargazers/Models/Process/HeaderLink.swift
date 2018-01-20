@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// Models the "Link" header
 struct HeaderLink {
     var elements: [Element]

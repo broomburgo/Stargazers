@@ -1,19 +1,27 @@
 import Foundation
 
 extension UseCase {
-    static func loadInitialStargazers(configuration: Configuration, updateApplication: @escaping Updater<Application>) -> Handler<(owner: String.NonEmpty, repo: String.NonEmpty)> {
+    static func loadInitialStargazers(
+        requestFunction: @escaping RequestFunction<RequestModel.StargazersStart,ResponseModel.Stargazers>,
+        updateApplication: @escaping Updater<Application>)
+        -> Handler<(owner: String.NonEmpty, repo: String.NonEmpty)>
+    {
         return { data in
             updateApplication { _ in .loading }
             
-            configuration.getStartgazersStart
+            requestFunction
                 <| RequestModel.StargazersStart.init(owner: data.owner, repo: data.repo)
                 <| handleStargazersResult(withUpdater: updateApplication)
         }
     }
     
-    static func appendNewStargazers(configuration: Configuration, updateApplication: @escaping Updater<Application>) -> Handler<URL> {
+    static func appendNewStargazers(
+        requestFunction: @escaping RequestFunction<RequestModel.StargazersRepo,ResponseModel.Stargazers>,
+        updateApplication: @escaping Updater<Application>)
+        -> Handler<URL>
+    {
         return  { url in
-            configuration.getStargazersRepo
+            requestFunction
                 <| RequestModel.StargazersRepo.init(url: url)
                 <| handleStargazersResult(withUpdater: updateApplication)
         }
