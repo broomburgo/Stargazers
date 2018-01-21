@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,14 +27,33 @@
                             <constraint firstAttribute="width" secondItem="egc-VO-eSQ" secondAttribute="height" multiplier="1:1" id="Zf4-o3-COU"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfV-8k-1B3">
+                        <rect key="frame" x="126.5" y="47" width="269.5" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="c0q-MQ-E8i">
+                        <rect key="frame" x="47" y="47" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="yfV-8k-1B3" secondAttribute="trailing" id="7zY-6w-8oU"/>
+                    <constraint firstItem="c0q-MQ-E8i" firstAttribute="centerX" secondItem="egc-VO-eSQ" secondAttribute="centerX" id="FeY-A2-WMK"/>
                     <constraint firstAttribute="bottom" secondItem="egc-VO-eSQ" secondAttribute="bottom" constant="8" id="P56-dB-yRo"/>
+                    <constraint firstItem="yfV-8k-1B3" firstAttribute="leading" secondItem="egc-VO-eSQ" secondAttribute="trailing" constant="20" id="ZpD-RK-hTI"/>
                     <constraint firstItem="egc-VO-eSQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="ZyP-0R-sH0"/>
+                    <constraint firstItem="yfV-8k-1B3" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="oLc-cC-B7P"/>
+                    <constraint firstItem="c0q-MQ-E8i" firstAttribute="centerY" secondItem="egc-VO-eSQ" secondAttribute="centerY" id="uuV-WO-Jw4"/>
                     <constraint firstItem="egc-VO-eSQ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="wCO-ew-790"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="activityIndicator" destination="c0q-MQ-E8i" id="XRU-fd-b3c"/>
+                <outlet property="iconImageView" destination="egc-VO-eSQ" id="apG-gh-5ra"/>
+                <outlet property="titleLabel" destination="yfV-8k-1B3" id="ZdN-YL-st1"/>
+            </connections>
             <point key="canvasLocation" x="-14" y="89.5"/>
         </tableViewCell>
     </objects>

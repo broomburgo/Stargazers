@@ -1,20 +1,32 @@
+import Foundation
+
 struct StargazersPage {
     var title: String
+    var nextURL: URL?
     var state: Transitional<[StargazersPageCell]>
     
     static func initial(title: String) -> StargazersPage {
-        return StargazersPage.init(title: title, state: .empty)
+        return StargazersPage.init(title: title, nextURL: nil, state: .empty)
     }
     
-    func resetTo(cells: [StargazerCell], addLoading: Bool) -> StargazersPage {
+    var toLoading: StargazersPage {
         var m_self = self
-        m_self.state = .success(cells.map(StargazersPageCell.done) + getLoading(when: addLoading))
+        m_self.state = .loading
         return m_self
     }
     
-    func append(cells: [StargazerCell], addLoading: Bool) -> StargazersPage {
+    func resetTo(cells: [StargazerCell], nextURL: URL?) -> StargazersPage {
+        var m_self = self
+        m_self.nextURL = nextURL
+        m_self.state = .success(cells.map(StargazersPageCell.done) + getLoading(nextURL: nextURL))
+        return m_self
+    }
+    
+    func append(cells: [StargazerCell], nextURL: URL?) -> StargazersPage {
         var m_self = self
         
+        m_self.nextURL = nextURL
+
         switch state {
             
         case .empty, .failure, .loading:
@@ -31,7 +43,7 @@ struct StargazersPage {
             
             m_self.state = .success(filtered
                 + cells.map(StargazersPageCell.done)
-                + getLoading(when: addLoading))
+                + getLoading(nextURL: nextURL))
         }
         
         return m_self
@@ -62,7 +74,7 @@ struct StargazersPage {
         return m_self
     }
     
-    private func getLoading(when addLoading: Bool) -> [StargazersPageCell] {
-        return addLoading ? [StargazersPageCell.loading] : []
+    private func getLoading(nextURL: URL?) -> [StargazersPageCell] {
+        return nextURL != nil ? [StargazersPageCell.loading] : []
     }
 }

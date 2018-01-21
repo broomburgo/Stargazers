@@ -11,7 +11,7 @@ enum RequestModel {
         static let method = HTTPMethod.get
         
         var getPath: String {
-            return "/\(owner.get)/\(repo.get)/stargazers"
+            return "/repos/\(owner.get)/\(repo.get)/stargazers"
         }
     }
     

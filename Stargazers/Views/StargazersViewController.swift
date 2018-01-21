@@ -3,13 +3,27 @@ import UIKit
 final class StargazersViewController: UIViewController {
     
     @IBOutlet weak var searchBox: UIView!
-    @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var searchButton: UIButton! {
+        didSet {
+            searchButton.isEnabled = false
+        }
+    }
     
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            tableViewAdapter.attach(to: tableView) { [weak self] cellModel, _ in
-                if case .loading = cellModel {
-                    self?.actionRef.update { _ in .nextPage }
+            tableViewAdapter.attach(to: tableView) { [weak self] cellModel, _, index in
+                
+                switch cellModel {
+                
+                case .done(let model) where model.shouldLoadIcon:
+                    self?.actionRef.update { _ in .loadCell(model: model, index: index) }
+                
+                case .loading:
+                    guard let nextURL = self?.model.nextURL else { return }
+                    self?.actionRef.update { _ in .nextPage(url: nextURL) }
+
+                default:
+                    break
                 }
             }
         }
@@ -27,6 +41,8 @@ final class StargazersViewController: UIViewController {
     }
     
     @IBAction func didDTapSearchButton(sender: UIButton) {
+        view.endEditing(true)
+        
         guard let currentOwner = currentOwner, let currentRepo = currentRepo else { return }
 
         actionRef.update { _ in .search(owner: currentOwner, repo: currentRepo) }
@@ -93,8 +109,8 @@ final class StargazersViewController: UIViewController {
         fatalError("Requires proper initialization")
     }
     
-    func update(model: StargazersPage, specificIndices: [Int] = []) {
-        self.model = model
+    func updateModel(update: Endo<StargazersPage>, specificIndices: [Int] = []) {
+        self.model = update(self.model)
         
         if case .success(let cells) = model.state {
             tableViewAdapter.update(with: cells, specificIndices: specificIndices)
@@ -110,6 +126,7 @@ extension StargazersViewController {
     enum Action {
         case none
         case search(owner: String.NonEmpty, repo: String.NonEmpty)
-        case nextPage
+        case loadCell(model: StargazerCell, index: Int)
+        case nextPage(url: URL)
     }
 }

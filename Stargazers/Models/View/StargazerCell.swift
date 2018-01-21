@@ -6,12 +6,25 @@ enum StargazersPageCell {
 }
 
 struct StargazerCell {
-    var title: String
+    var stargazer: Stargazer
     var icon: Transitional<Data>
     
-    static func withEmptyIcon(title: String) -> StargazerCell {
+    var shouldLoadIcon: Bool {
+        switch icon {
+        case .empty:
+            return true
+        case .loading:
+            return false
+        case .failure:
+            return true
+        case .success:
+            return false
+        }
+    }
+    
+    static func withEmptyIcon(stargazer: Stargazer) -> StargazerCell {
         return StargazerCell.init(
-            title: title,
+            stargazer: stargazer,
             icon: .empty)
     }
     

@@ -19,6 +19,18 @@ extension Array {
     }
 }
 
+extension Optional {
+    func filter(_ predicate: (Wrapped) -> Bool) -> Optional {
+        return flatMap { predicate($0) ? $0 : nil }
+    }
+}
+
+func onMainQueue(_ callback: @escaping () -> ()) {
+    DispatchQueue.main.async {
+        callback()
+    }
+}
+
 extension String: Error {}
 
 typealias Endo<A> = (A) -> A

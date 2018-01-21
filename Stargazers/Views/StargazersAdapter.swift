@@ -4,7 +4,7 @@ class TableViewAdapter<CellModel>: NSObject {
     
     var reloadRowAnimation = UITableViewRowAnimation.none
     
-    func attach(to tableView: UITableView, observeDisplayCell: @escaping (CellModel,UITableViewCell) -> () = { _,_ in }) {
+    func attach(to tableView: UITableView, observeDisplayCell: @escaping (CellModel,UITableViewCell,Int) -> () = { _,_,_ in }) {
         fatalError("\(#function) must be overridden")
     }
     
@@ -16,10 +16,10 @@ class TableViewAdapter<CellModel>: NSObject {
 final class StargazersAdapter: TableViewAdapter<StargazersPageCell>, UITableViewDataSource, UITableViewDelegate {
 
     private weak var tableView: UITableView? = nil
-    private var observeDisplayCell: (StargazersPageCell,UITableViewCell) -> () = { _,_ in }
+    private var observeDisplayCell: (StargazersPageCell,UITableViewCell,Int) -> () = { _,_,_ in }
     private var cells: [StargazersPageCell] = []
     
-    override func attach(to tableView: UITableView, observeDisplayCell: @escaping (StargazersPageCell,UITableViewCell) -> () = { _,_ in }) {
+    override func attach(to tableView: UITableView, observeDisplayCell: @escaping (StargazersPageCell,UITableViewCell,Int) -> () = { _,_,_ in }) {
         self.tableView = tableView
         self.observeDisplayCell = observeDisplayCell
         
@@ -60,7 +60,7 @@ final class StargazersAdapter: TableViewAdapter<StargazersPageCell>, UITableView
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        observeDisplayCell(cells[indexPath.row],cell)
+        observeDisplayCell(cells[indexPath.row], cell, indexPath.row)
     }
 }
 

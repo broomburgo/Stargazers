@@ -10,7 +10,7 @@ final class Ref<T> {
         self.value = transform(value)
     }
     
-    private var value: T {
+    private(set) var value: T {
         didSet {
             emitter.send(value)
         }

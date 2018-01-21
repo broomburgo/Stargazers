@@ -8,23 +8,52 @@ extension UseCase {
 //        }
 //    }
     
+//    static func getStargazersPage(application: Application) -> StargazersPage {
+//        let initial = StargazersPage.initial(title: "Stargazers")
+//        let cells = application.stargazers.map { StargazerCell.withEmptyIcon(title: $0.username) }
+//
+//
+//
+//        switch application.state {
+//        case .start:
+//            return initial
+//
+//        case .loading:
+//            return initial.toLoading
+//
+//        case .hasNextURL:
+//            return initial.resetTo(cells: cells, addLoading: true)
+//
+//        case .hasNextURLErrored:
+//            return initial.resetTo(cells: cells, addLoading: true)
+//
+//        case .errored(let error):
+//            return initial.fail(withError: error)
+//
+//        case .done:
+//            return initial.resetTo(cells: cells, addLoading: false)
+//        }
+//    }
+    
     static func loadStargazerCell(
         requestFunction: @escaping RequestFunction<URL,Data>,
-        stargazer: Stargazer,
         updateCell: @escaping Updater<StargazerCell>)
+        -> Handler<Stargazer>
     {
-        updateCell { $0.startLoadingIcon }
-        
-        requestFunction
-            <| stargazer.avatarURL
-            <| { getImage in
-                do {
-                    let imageData = try getImage()
-                    updateCell { $0.update(withImageData: imageData) }
-                }
-                catch let error {
-                    updateCell { $0.fail(withError: error) }
-                }
+        return { stargazer in
+            updateCell { $0.startLoadingIcon }
+            
+            requestFunction
+                <| stargazer.avatarURL
+                <| { getImage in
+                    do {
+                        let imageData = try getImage()
+                        updateCell { $0.update(withImageData: imageData) }
+                    }
+                    catch let error {
+                        updateCell { $0.fail(withError: error) }
+                    }
+            }
         }
     }
 }

@@ -35,7 +35,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
-                                <action selector="ownerTextFieldValueChangedWithSender:" destination="-1" eventType="valueChanged" id="dzC-eV-HC0"/>
+                                <action selector="ownerTextFieldValueChangedWithSender:" destination="-1" eventType="editingChanged" id="ePj-nZ-UVs"/>
                             </connections>
                         </textField>
                         <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FEN-yS-99O">
@@ -45,7 +45,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
-                                <action selector="repoTextFieldValueChangedWithSender:" destination="-1" eventType="valueChanged" id="j8N-ma-43a"/>
+                                <action selector="repoTextFieldValueChangedWithSender:" destination="-1" eventType="editingChanged" id="OPB-5g-yvl"/>
                             </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eec-86-38G">

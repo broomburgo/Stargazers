@@ -9,7 +9,8 @@ final class StargazerTableViewCell: UITableViewCell, XIBConstructible {
     @IBOutlet weak var titleLabel: UILabel!
     
     func update(with model: StargazerCell) -> StargazerTableViewCell {
-        self.titleLabel.text = model.title
+        self.titleLabel.text = model.stargazer.username
+        
         switch model.icon {
         case .empty:
             setImage(nil)
