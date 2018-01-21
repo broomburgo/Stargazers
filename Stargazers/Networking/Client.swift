@@ -24,13 +24,13 @@ enum Client {
         }
     }
     
-    static func cachedImageLoader(connection: @escaping ServerConnection) -> RequestFunction<URL,UIImage> {
-        var cache: [URL:UIImage] = [:]
+    static func cachedLoader(connection: @escaping ServerConnection, isValidData: @escaping (Data) -> Bool) -> RequestFunction<URL,Data> {
+        var cache: [URL:Data] = [:]
         
         return { url in
             { yield in
-                if let cachedImage = cache[url] {
-                    yield { cachedImage }
+                if let cachedData = cache[url] {
+                    yield { cachedData }
                     return
                 }
                 
@@ -42,12 +42,12 @@ enum Client {
                                 throw error
                             }
                             
-                            guard let data = serverResponse.0, let image = UIImage.init(data: data) else {
-                                throw "Cannot create image from data"
+                            guard let data = serverResponse.0, isValidData(data) else {
+                                throw "No valid data received from server"
                             }
                             
-                            cache[url] = image
-                            return image
+                            cache[url] = data
+                            return data
                         }
                 }
             }

@@ -1,6 +1,8 @@
+import Foundation
 
 precedencegroup ApplicationPrecedence {
     associativity: left
+    lowerThan: NilCoalescingPrecedence
 }
 
 infix operator <| : ApplicationPrecedence

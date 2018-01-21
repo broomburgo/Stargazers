@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 enum StargazersPageCell {
     case loading
@@ -7,7 +7,7 @@ enum StargazersPageCell {
 
 struct StargazerCell {
     var title: String
-    var icon: Transitional<UIImage>
+    var icon: Transitional<Data>
     
     static func withEmptyIcon(title: String) -> StargazerCell {
         return StargazerCell.init(
@@ -21,9 +21,9 @@ struct StargazerCell {
         return m_self
     }
     
-    func update(withIconImage image: UIImage) -> StargazerCell {
+    func update(withImageData imageData: Data) -> StargazerCell {
         var m_self = self
-        m_self.icon = .success(image)
+        m_self.icon = .success(imageData)
         return m_self
     }
     

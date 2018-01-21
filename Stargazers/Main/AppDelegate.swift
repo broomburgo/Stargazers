@@ -8,7 +8,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow.init(frame: UIScreen.main.bounds)
-        window?.rootViewController = UIViewController.init()
+        window?.rootViewController = StargazersViewController.init(
+            model: .initial(title: "Stargazers"),
+            tableViewAdapter: StargazersAdapter.init())
         window?.makeKeyAndVisible()
         
         return true

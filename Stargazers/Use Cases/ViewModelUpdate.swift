@@ -9,7 +9,7 @@ extension UseCase {
 //    }
     
     static func loadStargazerCell(
-        requestFunction: @escaping RequestFunction<URL,UIImage>,
+        requestFunction: @escaping RequestFunction<URL,Data>,
         stargazer: Stargazer,
         updateCell: @escaping Updater<StargazerCell>)
     {
@@ -19,8 +19,8 @@ extension UseCase {
             <| stargazer.avatarURL
             <| { getImage in
                 do {
-                    let iconImage = try getImage()
-                    updateCell { $0.update(withIconImage: iconImage) }
+                    let imageData = try getImage()
+                    updateCell { $0.update(withImageData: imageData) }
                 }
                 catch let error {
                     updateCell { $0.fail(withError: error) }
