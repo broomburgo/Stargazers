@@ -60,7 +60,6 @@ final class StargazersAdapter: TableViewAdapter<StargazersPageCell>, UITableView
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("Display: \(indexPath)")
         observeDisplayCell(cells[indexPath.row], cell, indexPath.row)
     }
 }

@@ -15,8 +15,6 @@ enum Client {
                     <| { serverResponse in
                         yield {
                             let jsonResponse = try JSONResponse.init(serverResponse: serverResponse)
-                            print("Request: \(request)")
-                            print("Response: \(jsonResponse)")
                             let responseModel = try Output.init(jsonResponse: jsonResponse)
                             
                             return responseModel
