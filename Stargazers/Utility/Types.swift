@@ -49,3 +49,18 @@ enum Transitional<A> {
     case success(A)
     case failure(Error)
 }
+
+//MARK: - Continuation utilities
+
+func pure<T>(_ value: T) -> Continuation<T> {
+    return { $0(value) }
+}
+
+func runSynchronous<T>(_ function: Continuation<T>) -> T {
+    var value: T? = nil
+    function {
+        value = $0
+    }
+    return value!
+}
+

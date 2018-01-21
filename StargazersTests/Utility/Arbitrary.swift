@@ -72,8 +72,3 @@ let arbitraryServerResponse: Gen<ServerResponse> = Gen.zip(OptionalOf<Dictionary
     
     return (optionalData,optionalHTTPURLResponse,optionalError)
 }
-
-
-
-
-
