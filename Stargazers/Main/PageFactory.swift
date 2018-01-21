@@ -2,21 +2,29 @@ import UIKit
 
 final class PageFactory {
     
+    let modelRef: Ref<(StargazersPage,[Int])>
     let configuration: Configuration
     let loadCachedImage: RequestFunction<URL,Data>
     
-    init(configuration: Configuration, cachedLoader: (@escaping ServerConnection, @escaping (Data) -> Bool) -> RequestFunction<URL,Data>) {
+    init(modelRef: Ref<(StargazersPage,[Int])>, configuration: Configuration, cachedLoader: (@escaping ServerConnection, @escaping (Data) -> Bool) -> RequestFunction<URL,Data>) {
+        self.modelRef = modelRef
         self.configuration = configuration
         self.loadCachedImage = cachedLoader(configuration.connection) { UIImage.init(data: $0) != nil }
     }
     
-    func getStargazersViewController(title: String, tableViewAdapter: TableViewAdapter<StargazersPageCell>) -> UIViewController {
+    func getStargazersViewController(tableViewAdapter: TableViewAdapter<StargazersPageCell>) -> UIViewController {
         let stargazersViewController = StargazersViewController.init(
-            model: StargazersPage.initial(title: title),
+            model: modelRef.value.0,
             tableViewAdapter: tableViewAdapter)
         
-        stargazersViewController.actionEmitter.add(listener: "ModelController") { [weak self, weak stargazersViewController] action in
-            guard let this = self, let page = stargazersViewController else { return }
+        modelRef.emitter.add(listener: "PageFactory") { [weak stargazersViewController] model, indices in
+            onMainQueue {
+                stargazersViewController?.updateModel(with: model, specificIndices: indices)
+            }
+        }
+        
+        stargazersViewController.actionEmitter.add(listener: "PageFactory") { [weak self] action in
+            guard let this = self else { return }
             
             switch action {
                 
@@ -24,13 +32,13 @@ final class PageFactory {
                 break
                 
             case .search(owner: let owner, repo: let repo):
-                this.search(owner: owner, repo: repo, page: page)
+                this.search(owner: owner, repo: repo)
                 
             case .nextPage(url: let url):
-                this.nextPage(nextURL: url, page: page)
+                this.nextPage(nextURL: url)
                 
             case .loadCell(model: let model, index: let index):
-                this.loadCell(stargazer: model.stargazer, index: index, page: page)
+                this.loadCell(stargazer: model.stargazer, index: index)
             }
         }
 
@@ -41,26 +49,29 @@ final class PageFactory {
 //MARK: - Private
 
 extension PageFactory {
-    private func search(owner: String.NonEmpty, repo: String.NonEmpty, page: StargazersViewController) {
+    private func search(owner: String.NonEmpty, repo: String.NonEmpty) {
         (owner,repo) |> UseCase.loadInitialStargazers(
             requestFunction: configuration.getStartgazersStart,
-            updatePage: { updater in onMainQueue { page.updateModel(update: updater) } })
-    }
-    
-    private func loadCell(stargazer: Stargazer, index: Int, page: StargazersViewController) {
-        stargazer |> UseCase.loadStargazerCell(
-            requestFunction: loadCachedImage,
-            updateCell: { updater in onMainQueue { page.updateModel(
-                update: { $0.updateCell(
-                    atIndex: index,
-                    update: updater) },
-                specificIndices: [index]) }
+            updatePage: { updater in
+                self.modelRef.update { tuple in (updater(tuple.0),[]) }
         })
     }
     
-    private func nextPage(nextURL: URL, page: StargazersViewController) {
+    private func loadCell(stargazer: Stargazer, index: Int) {
+        stargazer |> UseCase.loadStargazerCell(
+            requestFunction: loadCachedImage,
+            updateCell: { updater in
+                self.modelRef.update { tuple in
+                    (tuple.0.updateCell(atIndex: index, update: updater),[index])
+                }
+        })
+    }
+    
+    private func nextPage(nextURL: URL) {
         nextURL |> UseCase.appendNewStargazers(
             requestFunction: configuration.getStargazersRepo,
-            updatePage: { updater in onMainQueue { page.updateModel(update: updater) } })
+            updatePage: { updater in
+                self.modelRef.update { tuple in (updater(tuple.0),[]) }
+        })
     }
 }

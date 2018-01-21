@@ -111,8 +111,8 @@ final class StargazersViewController: UIViewController {
         fatalError("Requires proper initialization")
     }
     
-    func updateModel(update: Endo<StargazersPage>, specificIndices: [Int] = []) {
-        self.model = update(self.model)
+    func updateModel(with newModel: StargazersPage, specificIndices: [Int] = []) {
+        self.model = newModel
         
         if case .success(let cells) = model.state {
             tableViewAdapter.update(with: cells, specificIndices: specificIndices)

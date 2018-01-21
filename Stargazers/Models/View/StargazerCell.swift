@@ -22,6 +22,14 @@ struct StargazerCell {
         }
     }
     
+    var isLoadingIcon: Bool {
+        if case .loading = icon {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     static func withEmptyIcon(stargazer: Stargazer) -> StargazerCell {
         return StargazerCell.init(
             stargazer: stargazer,
@@ -31,6 +39,12 @@ struct StargazerCell {
     var startLoadingIcon: StargazerCell {
         var m_self = self
         m_self.icon = .loading
+        return m_self
+    }
+    
+    var removeIcon: StargazerCell {
+        var m_self = self
+        m_self.icon = .empty
         return m_self
     }
     

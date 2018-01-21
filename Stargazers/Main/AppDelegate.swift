@@ -9,13 +9,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         let pageFactory = PageFactory.init(
+            modelRef: Ref<(StargazersPage,[Int])>.init((StargazersPage.initial(title: "Stargazers"),[])),
             configuration: Configuration.global,
             cachedLoader: Client.cachedLoader)
         self.pageFactory = pageFactory
         
         let root = UINavigationController.init(
             rootViewController: pageFactory.getStargazersViewController(
-                title: "Stargazers",
                 tableViewAdapter: StargazersAdapter.init()))
         root.navigationBar.isTranslucent = false
         
