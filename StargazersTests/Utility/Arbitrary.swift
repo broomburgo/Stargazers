@@ -72,3 +72,32 @@ let arbitraryServerResponse: Gen<ServerResponse> = Gen.zip(OptionalOf<Dictionary
     
     return (optionalData,optionalHTTPURLResponse,optionalError)
 }
+
+let validServerResponse: ServerResponse = {
+    let data = try! JSONSerialization.data(withJSONObject: ["1":1], options: .prettyPrinted)
+    let response = HTTPURLResponse.init(
+        url: URL.init(string: "https://www.google.it")!,
+        statusCode: 200,
+        httpVersion: nil,
+        headerFields: ["key":"value"])
+    return (data,response,nil)
+}()
+
+let invalidServerResponseNoData: ServerResponse = {
+    let response = HTTPURLResponse.init(
+        url: URL.init(string: "https://www.google.it")!,
+        statusCode: 200,
+        httpVersion: nil,
+        headerFields: ["key":"value"])
+    return (nil,response,nil)
+}()
+
+let invalidServerResponseNoResponse: ServerResponse = {
+    let data = try! JSONSerialization.data(withJSONObject: ["1":1], options: .prettyPrinted)
+    return (data,nil,nil)
+}()
+
+let invalidServerResponseError: ServerResponse = {
+    return (nil,nil,"error" as Error?)
+}()
+

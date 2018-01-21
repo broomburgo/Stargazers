@@ -24,11 +24,9 @@ class JSONResponseTests: XCTestCase {
     
     func testJSONResponseProperInitialization() {
         property("JSONResponse is initialized with correct data") <- forAllNoShrink(arbitraryServerResponse) { serverResponse in
-            let jsonResponse = try? JSONResponse.init(serverResponse: serverResponse)
-            return (jsonResponse != nil) ==> {
-                return jsonResponse!.statusCode == (serverResponse.1 as! HTTPURLResponse).statusCode
-                    && jsonResponse!.headers == (serverResponse.1 as! HTTPURLResponse).allHeaderFields as! [String:String]
-            }
+            guard let jsonResponse = try? JSONResponse.init(serverResponse: serverResponse) else { return true }
+            return jsonResponse.statusCode == (serverResponse.1 as! HTTPURLResponse).statusCode
+                && jsonResponse.headers == (serverResponse.1 as! HTTPURLResponse).allHeaderFields as! [String:String]
         }
     }
 }
