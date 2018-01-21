@@ -8,9 +8,6 @@ extension UseCase {
     {
         return { stargazer in
             updateCell { $0.startLoadingIcon }
-            DispatchQueue.global().asyncAfter(deadline: .now() + 5, execute: {
-                updateCell { $0.isLoadingIcon ? $0.removeIcon : $0 }
-            })
             
             requestFunction
                 <| stargazer.avatarURL

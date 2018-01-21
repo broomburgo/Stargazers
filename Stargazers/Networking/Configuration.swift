@@ -26,6 +26,4 @@ struct Configuration {
                 }
         })
     }
-    
-//    private(set) lazy var loadCachedImage: RequestFunction<URL,UIImage> = Client.cachedImageLoader(connection: self.connection)
 }
