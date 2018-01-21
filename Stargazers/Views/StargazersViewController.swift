@@ -31,6 +31,7 @@ final class StargazersViewController: UIViewController {
     
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var errorView: UIView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     @IBAction func ownerTextFieldValueChanged(sender: UITextField) {
         currentOwner = sender.text.flatMap(String.NonEmpty.init)
@@ -72,11 +73,13 @@ final class StargazersViewController: UIViewController {
                 loadingView.isHidden = false
                 errorView.isHidden = true
                 
-            case .failure:
+            case .failure(let error):
                 searchBox.isUserInteractionEnabled = true
                 tableView.isHidden = true
                 loadingView.isHidden = true
                 errorView.isHidden = false
+                
+                errorLabel.text = error.localizedDescription
                 
             case .success:
                 searchBox.isUserInteractionEnabled = true

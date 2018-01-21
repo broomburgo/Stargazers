@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StargazersViewController" customModule="Stargazers" customModuleProvider="target">
             <connections>
+                <outlet property="errorLabel" destination="QbV-fQ-5Gx" id="EUv-JF-lA2"/>
                 <outlet property="errorView" destination="M5F-Vb-fDO" id="gPV-W8-E0o"/>
                 <outlet property="loadingView" destination="nUg-4t-z6d" id="Gah-FJ-VtS"/>
                 <outlet property="searchBox" destination="8ff-4K-Hz4" id="Rm9-X8-5Gg"/>
@@ -65,8 +66,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5F-Vb-fDO">
                     <rect key="frame" x="0.0" y="128" width="375" height="475"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Errore" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbV-fQ-5Gx">
-                            <rect key="frame" x="164" y="227.5" width="47" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Errore" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbV-fQ-5Gx">
+                            <rect key="frame" x="44" y="44" width="287" height="387"/>
                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -74,8 +75,10 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="QbV-fQ-5Gx" firstAttribute="centerY" secondItem="M5F-Vb-fDO" secondAttribute="centerY" id="GAm-Qg-iW6"/>
-                        <constraint firstItem="QbV-fQ-5Gx" firstAttribute="centerX" secondItem="M5F-Vb-fDO" secondAttribute="centerX" id="QN9-I8-Nci"/>
+                        <constraint firstAttribute="trailing" secondItem="QbV-fQ-5Gx" secondAttribute="trailing" constant="44" id="6IP-K6-bRp"/>
+                        <constraint firstAttribute="bottom" secondItem="QbV-fQ-5Gx" secondAttribute="bottom" constant="44" id="X20-PR-j7P"/>
+                        <constraint firstItem="QbV-fQ-5Gx" firstAttribute="top" secondItem="M5F-Vb-fDO" secondAttribute="top" constant="44" id="gNQ-Qm-Ncf"/>
+                        <constraint firstItem="QbV-fQ-5Gx" firstAttribute="leading" secondItem="M5F-Vb-fDO" secondAttribute="leading" constant="44" id="kTs-Ke-YOk"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nUg-4t-z6d">

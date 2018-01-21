@@ -74,7 +74,7 @@ class HeaderLinkTests: XCTestCase {
     func testHeaderLinkIgnoresWrongValues() {
         property("HeaderLink contains elements for all the right values and filters wrong values") <- forAll { (ad: DictionaryOf<String,String>) in
             var headers = ad.getDictionary
-            headers["Link"] = "\(rightHeaderPortionGen.generate),\(wrongHeaderPortionGen.generate),\(rightHeaderPortionGen.generate),\(wrongHeaderPortionGen.generate),\(rightHeaderPortionGen.generate)"
+            headers["Link"] = "\(rightHeaderPortionGen.generate), \(wrongHeaderPortionGen.generate), \(rightHeaderPortionGen.generate), \(wrongHeaderPortionGen.generate),\(rightHeaderPortionGen.generate)"
             
             guard let headerLink = HeaderLink.init(headers: headers) else { return false }
             return headerLink.elements.count == 3

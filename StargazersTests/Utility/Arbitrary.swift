@@ -2,6 +2,13 @@
 import SwiftCheck
 import Foundation
 
+extension CheckerArguments {
+    static func with(_ left: Int, _ right: Int, _ size: Int) -> CheckerArguments {
+        return CheckerArguments(
+            replay: .some((StdGen(left,right),size)))
+    }
+}
+
 extension String.NonEmpty: Arbitrary {
     public static var arbitrary: Gen<String.NonEmpty> {
         return String.arbitrary
@@ -47,3 +54,26 @@ extension URLComponents: Arbitrary {
         }
     }
 }
+
+let arbitraryHTTPURLResponse: Gen<HTTPURLResponse?> = Gen.zip(URLComponents.arbitrary, Int.arbitrary, DictionaryOf<String,String>.arbitrary).map { components, statusCode, headers in
+    HTTPURLResponse.init(
+        url: components.url!,
+        statusCode: statusCode,
+        httpVersion: nil,
+        headerFields: headers.getDictionary)
+}
+
+let arbitraryServerResponse: Gen<ServerResponse> = Gen.zip(OptionalOf<DictionaryOf<String,Int>>.arbitrary, arbitraryHTTPURLResponse, OptionalOf<String>.arbitrary).map { optionalDictData, optionalHTTPURLResponse, optionalStringError in
+    
+    let optionalData = optionalDictData.getOptional
+        .map { $0.getDictionary }
+        .flatMap { try? JSONSerialization.data(withJSONObject: $0, options: .prettyPrinted) }
+    let optionalError = optionalStringError.getOptional
+    
+    return (optionalData,optionalHTTPURLResponse,optionalError)
+}
+
+
+
+
+
