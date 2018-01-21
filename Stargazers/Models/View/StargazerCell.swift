@@ -2,7 +2,7 @@ import Foundation
 
 enum StargazersPageCell {
     case loading
-    case done(StargazerCell)
+    case stargazer(StargazerCell)
 }
 
 struct StargazerCell {
@@ -16,7 +16,7 @@ struct StargazerCell {
         case .loading:
             return false
         case .failure:
-            return true
+            return false
         case .success:
             return false
         }

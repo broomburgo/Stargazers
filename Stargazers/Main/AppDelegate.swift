@@ -13,11 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             cachedLoader: Client.cachedLoader)
         self.pageFactory = pageFactory
         
-        window = UIWindow.init(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController.init(
+        let root = UINavigationController.init(
             rootViewController: pageFactory.getStargazersViewController(
                 title: "Stargazers",
                 tableViewAdapter: StargazersAdapter.init()))
+        root.navigationBar.isTranslucent = false
+        
+        window = UIWindow.init(frame: UIScreen.main.bounds)
+        window?.rootViewController = root
         window?.makeKeyAndVisible()
         
         return true

@@ -60,6 +60,7 @@ final class StargazersAdapter: TableViewAdapter<StargazersPageCell>, UITableView
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("Display: \(indexPath)")
         observeDisplayCell(cells[indexPath.row], cell, indexPath.row)
     }
 }
@@ -69,7 +70,7 @@ extension StargazersPageCell {
         switch self {
         case .loading:
             return LoadingTableViewCell.cellHeight
-        case .done:
+        case .stargazer:
             return StargazerTableViewCell.cellHeight
         }
     }
@@ -83,7 +84,7 @@ extension StargazersPageCell {
                 as? LoadingTableViewCell
                 ?? LoadingTableViewCell.fromXIB
             
-        case .done(let cellModel):
+        case .stargazer(let cellModel):
             return tableView
                 .dequeueReusableCell(withIdentifier: StargazerTableViewCell.cellIdentifier)
                 as? StargazerTableViewCell

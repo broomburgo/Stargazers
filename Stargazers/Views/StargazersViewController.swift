@@ -11,11 +11,11 @@ final class StargazersViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            tableViewAdapter.attach(to: tableView) { [weak self] cellModel, _, index in
+            tableViewAdapter.attach(to: tableView) { [weak self] cellModel, cell, index in
                 
                 switch cellModel {
                 
-                case .done(let model) where model.shouldLoadIcon:
+                case .stargazer(let model) where model.shouldLoadIcon:
                     self?.actionRef.update { _ in .loadCell(model: model, index: index) }
                 
                 case .loading:
@@ -44,6 +44,8 @@ final class StargazersViewController: UIViewController {
         view.endEditing(true)
         
         guard let currentOwner = currentOwner, let currentRepo = currentRepo else { return }
+        
+        tableView.setContentOffset(.zero, animated: false)
 
         actionRef.update { _ in .search(owner: currentOwner, repo: currentRepo) }
     }

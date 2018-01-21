@@ -18,7 +18,7 @@ struct StargazersPage {
     func resetTo(cells: [StargazerCell], nextURL: URL?) -> StargazersPage {
         var m_self = self
         m_self.nextURL = nextURL
-        m_self.state = .success(cells.map(StargazersPageCell.done) + getLoading(nextURL: nextURL))
+        m_self.state = .success(cells.map(StargazersPageCell.stargazer) + getLoading(nextURL: nextURL))
         return m_self
     }
     
@@ -30,7 +30,7 @@ struct StargazersPage {
         switch state {
             
         case .empty, .failure, .loading:
-            m_self.state = .success(cells.map(StargazersPageCell.done))
+            m_self.state = .success(cells.map(StargazersPageCell.stargazer))
             
         case .success(let previousCells):
             let filtered = previousCells.filter {
@@ -42,7 +42,7 @@ struct StargazersPage {
             }
             
             m_self.state = .success(filtered
-                + cells.map(StargazersPageCell.done)
+                + cells.map(StargazersPageCell.stargazer)
                 + getLoading(nextURL: nextURL))
         }
         
@@ -59,7 +59,7 @@ struct StargazersPage {
         guard
             case .success(let cells) = state,
             let cell = cells.getSafely(at: index),
-            case .done(let stargazerCell) = cell
+            case .stargazer(let stargazerCell) = cell
             else { return self }
         
         let newStargazerCell = update(stargazerCell)
@@ -68,9 +68,9 @@ struct StargazersPage {
         
         var m_cells = cells
         m_cells.remove(at: index)
-        m_cells.insert(.done(newStargazerCell), at: index)
+        m_cells.insert(.stargazer(newStargazerCell), at: index)
         
-        m_self.state = .success(cells)
+        m_self.state = .success(m_cells)
         return m_self
     }
     

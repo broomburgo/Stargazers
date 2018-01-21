@@ -31,7 +31,7 @@ struct HeaderLink {
             guard
                 split.count == 2,
                 let urlElement = split[0]
-                    .trimmingCharacters(in: ["<",">"])
+                    .trimmingCharacters(in: [" ","<",">"])
                     |> Optional.some,
                 let url = URL.init(string: urlElement),
                 let relKeyRange = split[1].range(of: "rel="),
